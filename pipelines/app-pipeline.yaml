@@ -11,7 +11,7 @@ steps:
 - task: Docker@2
   displayName: Build Docker image
   inputs:
-    containerRegistry: '$(ACR_SERVICE_CONNECTION_NAME)'
+    containerRegistry: '$(acr_service_connection)'
     repository: 'python-app'
     command: 'build'
     Dockerfile: '.'
@@ -20,7 +20,7 @@ steps:
 - task: Docker@2
   displayName: Push Docker image
   inputs:
-    containerRegistry: '$(ACR_SERVICE_CONNECTION_NAME)'
+    containerRegistry: '$(acr_service_connection)'
     repository: 'python-app'
     command: 'push'
     tags: '$(Build.BuildId)'
@@ -33,8 +33,8 @@ steps:
   inputs:
     connectionType: 'Azure Resource Manager'
     azureSubscriptionEndpoint: 'azure-service-connection'
-    azureResourceGroup: 'resource-group'
-    kubernetesCluster: 'aks-cluster'
+    azureResourceGroup: 'techassessrg'
+    kubernetesCluster: 'akscluster'
     command: 'upgrade'
     chartType: 'FilePath'
     chartPath: '$(System.DefaultWorkingDirectory)/helm/app'

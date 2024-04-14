@@ -1,6 +1,6 @@
 replicaCount: 2
 image:
-  repository: acrname.acr.io/python-app
+  repository: aksacr.acr.io/python-app
   tag: latest
   pullPolicy: IfNotPresent
 service:

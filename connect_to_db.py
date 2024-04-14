@@ -2,7 +2,7 @@ import psycopg2
 
 db_host = "postgres"
 db_port = 5432
-db_name = "mydatabase"
+db_name = "apidb"
 db_user = "admin"
 db_password = "Password123!"
 

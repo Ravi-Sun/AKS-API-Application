@@ -5,22 +5,32 @@ variable "location" {
 
 variable "resource_group_name" {
   type    = string
-  default = ""
+  default = "techassessrg"
+}
+
+variable "storage_account_name" {
+  type    = string
+  default = "tfsa"
+}
+
+variable "container_name" {
+  type    = string
+  default = "statefilecontainer"
 }
 
 variable "aks_cluster_name" {
   type    = string
-  default = ""
+  default = "akscluster"
 }
 
 variable "dns_prefix" {
   type    = string
-  default = ""
+  default = "apiaks"
 }
 
 variable "acr_name" {
   type    = string
-  default = ""
+  default = "aksacr"
 }
 
 variable "vm_size" {

@@ -4,7 +4,7 @@ postgres:
     tag: latest
     pullPolicy: IfNotPresent
   db:
-    name: mydatabase
+    name: apidb
     user: admin
     password: Password123!
   storage:

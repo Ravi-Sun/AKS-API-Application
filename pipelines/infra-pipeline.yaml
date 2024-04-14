@@ -10,23 +10,23 @@ steps:
 - task: TerraformCLI@2
   inputs:
     command: 'init'
-    workingDirectory: 'infra'
-
+    workingDirectory: '(System.DefaultWorkingDirectory)/terraform'
+$
 - task: TerraformCLI@2
   inputs:
     command: 'plan'
-    workingDirectory: 'infra'
-    environmentServiceNameAzureRM: 'AZURE_SERVICE_CONNECTION_NAME'
-    backendServiceArm: 'AZURE_SERVICE_CONNECTION_NAME'
-    backendAzureRmResourceGroupName: 'TERRAFORM_STATE_RESOURCE_GROUP'
-    backendAzureRmStorageAccountName: 'TERRAFORM_STATE_STORAGE_ACCOUNT'
-    backendAzureRmContainerName: 'TERRAFORM_STATE_CONTAINER'
+    workingDirectory: '(System.DefaultWorkingDirectory)/terraform'
+    environmentServiceNameAzureRM: 'azure-service-connection'
+    backendServiceArm: 'azure-service-connection'
+    backendAzureRmResourceGroupName: 'techassessrg'
+    backendAzureRmStorageAccountName: 'tfsa'
+    backendAzureRmContainerName: 'statefilecontainer'
     backendAzureRmKey: 'terraform.tfstate'
 
 - task: ManualValidation@0
   inputs:
     notifyUsers: |
-      emailaddress@email.com
+      ravigeni.20@gmail.com
     instructions: 'Review and approve the Terraform plan.'
     onTimeout: 'reject'
     timeoutInMinutes: 10080
@@ -34,10 +34,10 @@ steps:
 - task: TerraformCLI@2
   inputs:
     command: 'apply'
-    workingDirectory: 'infra'
-    environmentServiceNameAzureRM: 'AZURE_SERVICE_CONNECTION_NAME'
-    backendServiceArm: 'AZURE_SERVICE_CONNECTION_NAME'
-    backendAzureRmResourceGroupName: 'TERRAFORM_STATE_RESOURCE_GROUP'
-    backendAzureRmStorageAccountName: 'TERRAFORM_STATE_STORAGE_ACCOUNT'
-    backendAzureRmContainerName: 'TERRAFORM_STATE_CONTAINER'
+    workingDirectory: '(System.DefaultWorkingDirectory)/terraform'
+    environmentServiceNameAzureRM: 'azure-service-connection'
+    backendServiceArm: 'azure-service-connection'
+    backendAzureRmResourceGroupName: 'techassessrg'
+    backendAzureRmStorageAccountName: 'tfsa'
+    backendAzureRmContainerName: 'statefilecontainer'
     backendAzureRmKey: 'terraform.tfstate'
