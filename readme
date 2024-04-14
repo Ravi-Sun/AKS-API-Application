@@ -1,0 +1,8 @@
+1 command to get the service public ip
+
+https://learn.microsoft.com/en-us/azure/aks/load-balancer-standard#deploy-the-service-manifest
+
+kubectl get service public-svc
+
+in our case it is 
+kubectl get service python-api

@@ -1,0 +1,11 @@
+postgres:
+  image:
+    repository: postgres
+    tag: latest
+    pullPolicy: IfNotPresent
+  db:
+    name: mydatabase
+    user: admin
+    password: Password123!
+  storage:
+    size: 1Gi

@@ -1,0 +1,43 @@
+trigger:
+- main
+
+name: app-cicd-pipeline
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+
+steps:
+- task: Docker@2
+  displayName: Build Docker image
+  inputs:
+    containerRegistry: '$(ACR_SERVICE_CONNECTION_NAME)'
+    repository: 'python-app'
+    command: 'build'
+    Dockerfile: '.'
+    tags: '$(Build.BuildId)'
+
+- task: Docker@2
+  displayName: Push Docker image
+  inputs:
+    containerRegistry: '$(ACR_SERVICE_CONNECTION_NAME)'
+    repository: 'python-app'
+    command: 'push'
+    tags: '$(Build.BuildId)'
+
+- task: HelmInstaller@1
+  inputs:
+    helmVersionToInstall: 'latest'
+
+- task: HelmDeploy@0
+  inputs:
+    connectionType: 'Azure Resource Manager'
+    azureSubscriptionEndpoint: 'azure-service-connection'
+    azureResourceGroup: 'resource-group'
+    kubernetesCluster: 'aks-cluster'
+    command: 'upgrade'
+    chartType: 'FilePath'
+    chartPath: '$(System.DefaultWorkingDirectory)/helm/app'
+    releaseName: 'api-release'
+    overrideValues: |
+      image.tag=$(Build.BuildId)

@@ -1,0 +1,11 @@
+replicaCount: 2
+image:
+  repository: acrname.acr.io/python-app
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  name: python-api
+  type: LoadBalancer
+  port: 8000
+nginx:
+  domain: http://ravi.com
