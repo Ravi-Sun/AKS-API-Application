@@ -20,3 +20,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8000
+          env:
+            - name: APP_CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "python-api.fullname" . }}-configmap
+                  key: APP_CONFIG

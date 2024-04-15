@@ -4,21 +4,6 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
 }
 
-resource "azurerm_storage_account" "sa" {
-  name                     = var.storage_account_name
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-}
-
-resource "azurerm_storage_container" "storagecontainer" {
-  name                  = var.container_name
-  storage_account_name  = azurerm_storage_account.sa.name
-  container_access_type = "private"
-}
-
-
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = var.aks_cluster_name
   location            = var.location
@@ -32,9 +17,18 @@ resource "azurerm_kubernetes_cluster" "aks" {
     os_disk_size_gb = var.os_disk_size_gb
   }
 
+  tags = {
+    environment = var.environment
+  }
+
   identity {
     type = "SystemAssigned"
   }
+}
+
+data "local_file" "kubeconfig" {
+  content  = azurerm_kubernetes_cluster.aks.kube_config_raw
+  filename = "~/.kube/config/kubeconfig.yaml"
 }
 
 resource "azurerm_container_registry" "acr" {
@@ -49,6 +43,11 @@ resource "azurerm_role_assignment" "aks_acr_role" {
   scope                = azurerm_container_registry.acr.id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_kubernetes_cluster.aks.identity[0].principal_id
+
+  depends_on = [
+    azurerm_kubernetes_cluster.aks,
+    azurerm_container_registry.acr
+  ]
 }
 
 
@@ -63,7 +62,7 @@ resource "helm_release" "nginx_ingress" {
   chart      = "nginx-ingress"
   version    = var.nginx_version
 
-  namespace = "kube-system"
+  namespace = "default"
 
   set {
     name  = "rbac.create"
@@ -77,4 +76,8 @@ output "aks_cluster_id" {
 
 output "acr_id" {
   value = azurerm_container_registry.acr.id
+}
+
+output "kube_config" {
+  value = azurerm_kubernetes_cluster.aks.kube_config_raw
 }

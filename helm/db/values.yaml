@@ -5,7 +5,5 @@ postgres:
     pullPolicy: IfNotPresent
   db:
     name: apidb
-    user: admin
-    password: Password123!
   storage:
     size: 1Gi

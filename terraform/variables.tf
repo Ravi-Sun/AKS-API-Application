@@ -8,16 +8,6 @@ variable "resource_group_name" {
   default = "techassessrg"
 }
 
-variable "storage_account_name" {
-  type    = string
-  default = "tfsa"
-}
-
-variable "container_name" {
-  type    = string
-  default = "statefilecontainer"
-}
-
 variable "aks_cluster_name" {
   type    = string
   default = "akscluster"
@@ -26,6 +16,11 @@ variable "aks_cluster_name" {
 variable "dns_prefix" {
   type    = string
   default = "apiaks"
+}
+
+variable "environment" {
+  type    = string
+  default = "dev"
 }
 
 variable "acr_name" {
